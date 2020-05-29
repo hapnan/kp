@@ -22,7 +22,6 @@
 				<hr>
 				<div class="interface">
 					<span class="pl-2" style="font-size: 11px; color: rgb(185, 185, 185);">INTERFACE</span>
-					<div class="accordian" id="accordianExaple">
 						<a data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample" class="dropdown-toggle"><i class="far fa-keyboard"></i> Input</a>
 						<div class="collapse card" id="collapseExample">
 							<div class="card-body ">
@@ -31,7 +30,6 @@
 								<a class="text-dark proceding" href="javascript:;">Procceding</a>
 							</div>	
 						</div>
-					</div>
 					<div class="data-input">
 						<a href="javascript:;"><i class="fas fa-table data-input"></i> Data Input</a>
 					</div>

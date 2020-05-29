@@ -116,7 +116,7 @@
             
             $this->jrl->jurnalupdateall($data);
             
-            redirect('console/details/');
+            redirect('console/details/', 'refresh', $id);
         }
 
         public function updatestatus()
