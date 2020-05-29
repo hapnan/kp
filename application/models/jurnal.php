@@ -34,6 +34,13 @@
 			
 		}
 
+		public function jurnalupdateall($data)
+		{	
+			$jurnalid = $data['id'];
+			$this->db->where('id', $jurnalid);
+			$this->db->update('data_journal', $data);
+		}
+
 		public function getjurnal($id)
 		{
 			if ($id==null) {

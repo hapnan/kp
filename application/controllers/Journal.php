@@ -90,11 +90,13 @@
             ];
 
             $this->jrl->jurnalupdate($data);
+
         }
 
-        public function updatejurnalall()
+        public function updatejurnalall($id)
         {
             $data = [
+                'id' => $id,
                 'namajurnal' => htmlspecialchars($this->input->post('namajurnal',true)),
                 'jdl_publikasi' => htmlspecialchars($this->input->post('judulpublikasi',true)),
                 'jns_publikasi' => htmlspecialchars($this->input->post('jenispublikasi',true)),
@@ -112,6 +114,9 @@
             ];
 
             
+            $this->jrl->jurnalupdateall($data);
+            
+            redirect('console/details/');
         }
 
         public function updatestatus()

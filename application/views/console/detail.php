@@ -17,7 +17,7 @@
                 <div class="col-md-12">
                     <h3 class="text-center">Detail</h3>
                     <hr>
-                    <form class="p-3"  method="post" action="<?= base_url()?>journal/updatejurnalall">
+                    <form class="p-3"  method="post" action="<?= base_url()?>journal/updatejurnalall/<?= $user['id'];?>">
                         <div class="form-row">
                             <div class="form-group col-md-6">
                                 <label for="namajurnal">Nama Jurnal</label>
@@ -93,9 +93,9 @@
                             </div>
                         </div>
                         <div class="d-flex justify-content-end mr-3">
-                            <button name="journal_submit" id="edit"  type="button" class="btn btn-danger mr-2" >Edit</button>
-                            <button name="journal_submit" id="cancel"  type="button" class="btn btn-danger mr-2" >Cancel</button>
-                            <button name="journal_submit" id="save" type="button" class="btn btn-success" value="<?= $user['id']?>" >Submit</button>
+                            <button name="journal_edit" id="edit"  type="button" class="btn btn-danger mr-2" >Edit</button>
+                            <button name="journal_cancel" id="cancel"  type="button" class="btn btn-danger mr-2" >Cancel</button>
+                            <button name="journal_submit" id="save" type="submit" class="btn btn-success" value="<?= $user['id']?>" >Submit</button>
                         </div>
                     </form>
                 </div>
