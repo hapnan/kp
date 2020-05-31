@@ -8,7 +8,7 @@
 				</div>
 				<div class="user-info">
 					<span class="user-name"><?= $user['nama']; ?></span>
-					<small class="user-role"><?php if($user['role'] = '1'){echo "role";}else if($user['role'] = '2'){echo "Editor";}else{echo "user";};?></small>
+					<small class="user-role"><?= $user['role']?></small>
 				</div>
 				
 			</div>

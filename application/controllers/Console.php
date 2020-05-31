@@ -95,21 +95,35 @@ class Console extends CI_Controller {
 	public function datajournal()
 	{	
 		if ($this->session->userdata('role')==1) {
-			$id = null;
-			$data = $this->jur->getjurnal($id)->result();
+			$data = [
+				'id' => $this->session->userdata('id'),
+				'role' => $this->session->userdata('role'),
 
-			echo json_encode($data);
+			];
+			$dataj = $this->jur->getjurnal($data)->result();
+
+			echo json_encode($dataj);
 			
 		} else if ($this->session->userdata('role')==2) {
-			$id = $this->session->userdata('id');
-			$data = $this->jur->getjurnal($id)->result();
+			$data = [
+				'id' => $this->session->userdata('id'),
+				'role' => $this->session->userdata('role'),
 
-			echo json_encode($data);
+			];
+			
+			$dataj = $this->jur->getjurnal($data)->result();
+
+			echo json_encode($dataj);
 		}else if($this->session->userdata('role')==3){
-			$id = $this->session->userdata('id');
-			$data = $this->jur->getjurnal($id)->result();
+			$data = [
+				'id' => $this->session->userdata('id'),
+				'role' => $this->session->userdata('role'),
 
-			echo json_encode($data);
+			];
+			
+			$dataj = $this->jur->getjurnal($data)->result();
+
+			echo json_encode($dataj);
 		}
 		
 	}
@@ -117,21 +131,35 @@ class Console extends CI_Controller {
 	public function dataproceding()
 	{	
 		if ($this->session->userdata('role')==1) {
-			$id = null;
-			$data = $this->jur->getproceding($id)->result();
+			$data = [
+				'id' => $this->session->userdata('id'),
+				'role' => $this->session->userdata('role'),
 
-			echo json_encode($data);
+			];
+			$datap = $this->jur->getproceding($data)->result();
+
+			echo json_encode($datap);
 			
 		} else if ($this->session->userdata('role')==2) {
-			$id = $this->session->userdata('id');
-			$data = $this->jur->getjurnal($id)->result();
+			$data = [
+				'id' => $this->session->userdata('id'),
+				'role' => $this->session->userdata('role'),
 
-			echo json_encode($data);
+			];
+			
+			$datap = $this->jur->getproceding($data)->result();
+
+			echo json_encode($datap);
 		}else if($this->session->userdata('role')==3){
-			$id = $this->session->userdata('id');
-			$data = $this->jur->getjurnal($id)->result();
+			$data = [
+				'id' => $this->session->userdata('id'),
+				'role' => $this->session->userdata('role'),
 
-			echo json_encode($data);
+			];
+			
+			$datap = $this->jur->getproceding($data)->result();
+
+			echo json_encode($datap);
 		}
 		
 	}
@@ -140,8 +168,8 @@ class Console extends CI_Controller {
 	{
 
 		
-		$data = $this->jur->getjurnal($id)->row_array();
-		
+		$data = $this->jur->getjurnalbyid($id)->row_array();
+		$role = $this->session->userdata('level');
 		$editor = null;
 		
 		if ($data['editor']==0) {
@@ -156,22 +184,26 @@ class Console extends CI_Controller {
 			'id' => $dataeditor['id'],
 			'nama' => $dataeditor['nama_user']
 		];
+		if($role==1){
 
+		}else if($role == 2){
+
+		}
 		$databaru['user']= [
 			'id' => $data['id'],
-			'jdl_makalah' => $data['jdl_makalah'],
-			'nm_forum' => $data['nm_forum'],
-			'tgk_forum_ilm' => $data['tgk_forum_ilm'],
-			'thn_pelaksanaan' => $data['thn_pelaksanaan'],
-			'url_jurnal' => $data['url_jurnal'],
-			'ins_penyelenggara' => $data['ins_penyelenggara'],
-			'wkt_dari' => $data['wkt_dari'],
-			'wkt_sampai' => $data['wkt_sampai'],
-			'tmp_pelaksanaan' => $data['tmp_pelaksanaan'],
-			'sts_pemakaian' => $data['sts_pemakaian'],
-			'nm_dsn' => $data['nm_dsn'],
+			'namajurnal' => $data['namajurnal'],
+			'jdl_publikasi' => $data['jdl_publikasi'],
+			'jns_publikasi' => $data['jns_publikasi'],
+			'thn' => $data['thn'],
+			'issn' => $data['issn'],
+			'url' => $data['url'],
+			'volume' => $data['volume'],
+			'nomor' => $data['nomor'],
+			'halaman' => $data['halaman'],
+			'indexscopus' => $data['indexscopus'],
+			'penulis' => $data['penulis'],
+			'namadosen' => $data['namadosen'],
 			'nidn' => $data['nidn'],
-			'prodi' => $data['prodi'],
 			'editor' => $editor['nama_user']
 		];
 		$this->load->view('console/detail', $databaru);

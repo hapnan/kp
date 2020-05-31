@@ -15,9 +15,6 @@ $(document).ready(function() {
 	$('.proceding').on("click", function() {
 		$('#content-load').load(site_urlproceding);
 	});
-	$('.proceding').on("click", function() {
-		$('#content-load').load(site_urlproceding);
-	});
 	$('.data-input').on("click", function(){
 		$('#content-load').load(site_data);
 		

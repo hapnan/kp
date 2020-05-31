@@ -41,15 +41,23 @@
 			$this->db->update('data_journal', $data);
 		}
 
-		public function getjurnal($id)
+		public function getjurnal($data)
 		{
-			if ($id==null) {
+			$id = $data['id'];
+			$role = $data['role'];
+			if ($role==1) {
 				return $this->db->get('data_journal');
 				
-			}else {
+			}else if ($role==2){
 				$this->db->select('*');
 				$this->db->from('data_journal');
-				$this->db->where('id', $id);
+				$this->db->where('editor', $id);
+				$query = $this->db->get();
+				return $query;
+			}else if($role==3){
+				$this->db->select('*');
+				$this->db->from('data_journal');
+				$this->db->where('username', $id);
 				$query = $this->db->get();
 				return $query;
 			}
@@ -57,6 +65,23 @@
 			
 		}
 
+		public function getjurnalbyid($id)
+		{
+			$this->db->select('*');
+			$this->db->from('data_journal');
+			$this->db->where('id', $id);
+			$query = $this->db->get();
+			return $query;
+		}
+
+		public function getprocedingbyid($id)
+		{
+			$this->db->select('*');
+				$this->db->from('data_proceeding');
+				$this->db->where('id', $id);
+				$query = $this->db->get();
+				return $query;
+		}
 		public function statusupdate($data)	
 		{
 			$id = $data['id'];
@@ -68,19 +93,27 @@
 
 		}
 
-		public function getproceding($id)
+		public function getproceding($data)
 		{
-			if ($id==null) {
-				return $this->db->get('data_proceeding');
+			if ($data['role']==1) {
+				return $this->db->get('data_journal');
 				
-			}else {
+			}else if ($data['role']==2){
 				$this->db->select('*');
 				$this->db->from('data_proceeding');
-				$this->db->where('id', $id);
+				$this->db->where('editor', $data['id']);
+				$query = $this->db->get();
+				return $query;
+			}else if($data['role']==3){
+				$this->db->select('*');
+				$this->db->from('data_poceeding');
+				$this->db->where('username', $data['id']);
 				$query = $this->db->get();
 				return $query;
 			}	
 		}
+
+		
         
 
     }

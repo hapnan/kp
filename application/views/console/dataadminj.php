@@ -7,11 +7,11 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <link rel="stylesheet" href="<?= base_url()?>assets/css/data.css">
+    <link rel="stylesheet" href="<?= base_url()?>/assets/css/data.css">
     <title>Hello, world!</title>
   </head>
   <body>
-  <div class="container-fluid mt-3">
+  <div class="container-fluid mt-3 mx-4">
       <ul class="nav nav-tabs" id="myTab" role="tablist">
       <li class="nav-item" role="presentation">
         <a class="nav-link active" id="jurnaltab" data-toggle="tab" href="#home" role="tab" aria-controls="jurnal" aria-selected="true">jurnal</a>

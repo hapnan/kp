@@ -50,7 +50,7 @@
 
 					$.ajax({
 						type:'POST',
-						url:'<?= base_url().'/console/datajurnal';?>',
+						url:'<?= base_url().'/console/datajournal';?>',
 						dataType: 'json',
 						success: function(data){
 							var baris='';
@@ -85,12 +85,7 @@
 						}
 					})
 				};
-
-			
       })
-				$('.edit').on("click",function(){
-					
-				})
     </script>
   </body>
 </html>
