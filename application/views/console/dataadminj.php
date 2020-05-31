@@ -7,28 +7,63 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-
+    <link rel="stylesheet" href="<?= base_url()?>assets/css/data.css">
     <title>Hello, world!</title>
   </head>
   <body>
-  <table class="table">
+  <div class="container-fluid mt-3">
+      <ul class="nav nav-tabs" id="myTab" role="tablist">
+      <li class="nav-item" role="presentation">
+        <a class="nav-link active" id="jurnaltab" data-toggle="tab" href="#home" role="tab" aria-controls="jurnal" aria-selected="true">jurnal</a>
+      </li>
+      <li class="nav-item" role="presentation">
+        <a class="nav-link" id="procedingtab" data-toggle="tab" href="#proceding" role="tab" aria-controls="proceding" aria-selected="false">proceding</a>
+      </li>
+    </ul>
+    <div class="tab-content" id="myTabContent">
+      <div class="tab-pane fade show active mt-2" id="home" role="tabpanel" aria-labelledby="jurnaltab">
+        <table class="table">
+            <thead class="thead-dark text-center">
+                <tr>
+                    <th scope="col">No</th>
+                    <th scope="col">Nama Jurnal</th>
+                    <th scope="col">Judul Publikasi</th>
+                    <th scope="col">jenis Publikasi</th>
+                    <th scope="col">Tahun Publikasi</th>
+                    <th scope="col">ISSN Jurnal</th>
+                    <th scope="col">url Jurnal</th>
+                    <th scope="col">Details</th>
+                    <th scope="col">action</th>
+                </tr>
+            </thead>
+            <tbody id="target">
+              
+            </tbody>
+        </table>
+      </div>
+      <div class="tab-pane fade mt-2" id="proceding" role="tabpanel" aria-labelledby="procedingtab">
+      <table class="table">
         <thead class="thead-dark text-center">
             <tr>
                 <th scope="col">No</th>
-                <th scope="col">Nama Jurnal</th>
-                <th scope="col">Judul Publikasi</th>
-                <th scope="col">jenis Publikasi</th>
-                <th scope="col">Tahun Publikasi</th>
-                <th scope="col">ISSN Jurnal</th>
-                <th scope="col">url Jurnal</th>
+                <th scope="col">Judul Makalah</th>
+                <th scope="col">Nama Forum</th>
+                <th scope="col">Tingkat Forum</th>
+                <th scope="col">Tahun Pelaksanaan</th>
+                <th scope="col">Institusi Penyelenggara</th>
+                <th scope="col">Url Proceding</th>
                 <th scope="col">Details</th>
                 <th scope="col">action</th>
             </tr>
         </thead>
-        <tbody id="target">
+        <tbody id="target-p">
            
         </tbody>
   </table>
+      </div>
+    </div>
+  </div>
+  
 
   <div class="modal fade" id="modaleditor" tabindex="-1" role="dialog" aria-labelledby="modaleditorLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -108,9 +143,10 @@
     <script type="text/javascript">
       
       $(document).ready(function(){
-        ajaxsearch();
+        jurnal();
+        proceding();
 
-				function ajaxsearch() {
+				function jurnal() {
 					$.ajax({
 						type:'GET',
 						url:'<?= base_url().'console/datajournal';?>',
@@ -129,7 +165,7 @@
                                 '<td>'+data[i].jns_publikasi+'</td>'+
 																'<td>'+data[i].thn+'</td>'+
 																'<td>'+data[i].issn+'</td>'+
-																'<td>'+data[i].url+'</td>'+
+																'<td>'+'<a class="btn btn-link" href="'+data[i].url+'" target="_blank">'+'link'+'</a>'+'</td>'+
 																'<td class="detail">'+'<a href="<?php echo base_url('');?>console/details/'+data[i].id+'" class="btn btn-link details" id="details" target="_blank"  value="'+data[i].id+'">'+
 																			  '<i class="material-icons edit" >'+"Details"+'</i>'+
 																			'</a>'+'</td>'+
@@ -154,11 +190,57 @@
 								
 							}
               $('#target').html(baris);
-              $('collapse').accordian();
 						}
 					})
         };
 
+        function proceding() {
+					$.ajax({
+						type:'GET',
+						url:'<?= base_url().'console/dataproceding';?>',
+            dataType: 'json',
+            error:function(data){
+              alert('wkwkwkwkwkwk')
+            },
+						success: function(data){
+							var baris='';
+							for (var i = 0; i < data.length; i++) {
+								var sum = i+1;
+								baris +='<tr>'+
+																'<td>'+sum+'</td>'+
+																'<td>'+data[i].jdl_makalah+'</td>'+
+																'<td>'+data[i].nm_forum+'</td>'+
+                                '<td>'+data[i].tgk_forum_ilm+'</td>'+
+																'<td>'+data[i].thn_pelaksanaan+'</td>'+
+																'<td>'+data[i].ins_penyelenggara+'</td>'+
+																'<td>'+'<a class="btn btn-link" href="'+data[i].url_jurnal+'" target="_blank">'+'link'+'</a>'+'</td>'+
+																'<td class="detail">'+'<a href="<?php echo base_url('');?>console/details/'+data[i].id+'" class="btn btn-link details" id="details" target="_blank"  value="'+data[i].id+'">'+
+																			  '<i class="material-icons edit" >'+"Details"+'</i>'+
+																			'</a>'+'</td>'+
+                                
+                                '<td>'+'<button class="btn btn-warning editor mx-1" id="editor" value="'+data[i].id+'" data-toggle="modal" data-target="#modaleditor">'+
+																			  "Assign to Editors"+'</button>'+
+                                        '<button class="btn btn-success editor mx-1" id="terima" value="'+data[i].id+'" data-toggle="modal" data-target="#modalterima">'+
+																			  "accept"+'</button>'+
+                                        '<button class="btn btn-danger editor mx-1" id="tolak" value="'+data[i].id+'" data-toggle="modal" data-target="#modaltolak">'+
+																			  "refuse"+'</button>'+
+                                        '</td>'+
+												'</tr>';
+                  if (data[i].status==1 || data[i].status==2){
+                    $('#editor').attr('disable', true)
+                    $('#terima').attr('disable', true)
+                    $('#tolak').attr('disable', true)
+                  } else {
+                    $('#editor').attr('disable', false)
+                    $('#terima').attr('disable', false)
+                    $('#tolak').attr('disable', false)
+                  }
+								
+							}
+              $('#target-p').html(baris);
+						}
+					})
+        };
         
       })
     </script>
@@ -182,7 +264,6 @@
 								
 							}
               $('#editorselect').html(baris);
-              $('collapse').accordian();
 						}
 					})
 

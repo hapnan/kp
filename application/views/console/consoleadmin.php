@@ -22,8 +22,8 @@
 				<hr>
 				<div class="interface">
 					<span class="pl-2" style="font-size: 11px; color: rgb(185, 185, 185);">INTERFACE</span>
-						<a data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample" class="dropdown-toggle"><i class="far fa-keyboard"></i> Input</a>
-						<div class="collapse card" id="collapseExample">
+						<a data-toggle="collapse" href="#menupilih" role="button" aria-expanded="true" aria-controls="menupilih" class="menubutton"><i class="far fa-keyboard"></i> Input</a>
+						<div class="collapse card" id="menupilih">
 							<div class="card-body ">
 								<a class="text-dark jurnal" href="javascript:;">Jurnal</a>
 							

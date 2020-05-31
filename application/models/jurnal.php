@@ -67,6 +67,20 @@
 			$this->db->update('data_journal');
 
 		}
+
+		public function getproceding($id)
+		{
+			if ($id==null) {
+				return $this->db->get('data_proceeding');
+				
+			}else {
+				$this->db->select('*');
+				$this->db->from('data_proceeding');
+				$this->db->where('id', $id);
+				$query = $this->db->get();
+				return $query;
+			}	
+		}
         
 
     }

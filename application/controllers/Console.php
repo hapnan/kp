@@ -113,6 +113,29 @@ class Console extends CI_Controller {
 		}
 		
 	}
+	
+	public function dataproceding()
+	{	
+		if ($this->session->userdata('role')==1) {
+			$id = null;
+			$data = $this->jur->getproceding($id)->result();
+
+			echo json_encode($data);
+			
+		} else if ($this->session->userdata('role')==2) {
+			$id = $this->session->userdata('id');
+			$data = $this->jur->getjurnal($id)->result();
+
+			echo json_encode($data);
+		}else if($this->session->userdata('role')==3){
+			$id = $this->session->userdata('id');
+			$data = $this->jur->getjurnal($id)->result();
+
+			echo json_encode($data);
+		}
+		
+	}
+	
 	public function details($id)
 	{
 
@@ -136,23 +159,25 @@ class Console extends CI_Controller {
 
 		$databaru['user']= [
 			'id' => $data['id'],
-			'namajurnal' => $data['namajurnal'],
-			'jdl_publikasi' => $data['jdl_publikasi'],
-			'jns_publikasi' => $data['jns_publikasi'],
-			'thn' => $data['thn'],
-			'issn' => $data['issn'],
-			'url' => $data['url'],
-			'volume' => $data['volume'],
-			'nomor' => $data['nomor'],
-			'halaman' => $data['halaman'],
-			'indexscopus' => $data['indexscopus'],
-			'penulis' => $data['penulis'],
-			'namadosen' => $data['namadosen'],
+			'jdl_makalah' => $data['jdl_makalah'],
+			'nm_forum' => $data['nm_forum'],
+			'tgk_forum_ilm' => $data['tgk_forum_ilm'],
+			'thn_pelaksanaan' => $data['thn_pelaksanaan'],
+			'url_jurnal' => $data['url_jurnal'],
+			'ins_penyelenggara' => $data['ins_penyelenggara'],
+			'wkt_dari' => $data['wkt_dari'],
+			'wkt_sampai' => $data['wkt_sampai'],
+			'tmp_pelaksanaan' => $data['tmp_pelaksanaan'],
+			'sts_pemakaian' => $data['sts_pemakaian'],
+			'nm_dsn' => $data['nm_dsn'],
 			'nidn' => $data['nidn'],
+			'prodi' => $data['prodi'],
 			'editor' => $editor['nama_user']
 		];
 		$this->load->view('console/detail', $databaru);
 
 	}
+
+	
 
 }
