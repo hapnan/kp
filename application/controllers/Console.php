@@ -89,6 +89,7 @@ class Console extends CI_Controller {
 	}
 	public function dataadminj()
 	{
+		
 		$this->load->view('console/dataadminj');
 	}
 

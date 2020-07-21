@@ -92,11 +92,12 @@
 			$this->db->update('data_journal');
 
 		}
+		
 
 		public function getproceding($data)
 		{
 			if ($data['role']==1) {
-				return $this->db->get('data_journal');
+				return $this->db->get('data_proceeding');
 				
 			}else if ($data['role']==2){
 				$this->db->select('*');
@@ -106,7 +107,7 @@
 				return $query;
 			}else if($data['role']==3){
 				$this->db->select('*');
-				$this->db->from('data_poceeding');
+				$this->db->from('data_proceeding');
 				$this->db->where('username', $data['id']);
 				$query = $this->db->get();
 				return $query;

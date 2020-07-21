@@ -170,30 +170,44 @@
 																			  '<i class="material-icons edit" >'+"Details"+'</i>'+
 																			'</a>'+'</td>'+
                                 
-                                '<td>'+'<button class="btn btn-warning editor mx-1" id="editor" value="'+data[i].id+'" data-toggle="modal" data-target="#modaleditor">'+
+                                '<td>'+'<button class="btn btn-warning editor mx-1" id="editor" value="'+data[i].id+'" status="'+data[i].status+'" data-toggle="modal" data-target="#modaleditor">'+
 																			  "Assign to Editors"+'</button>'+
-                                        '<button class="btn btn-success editor mx-1" id="terima" value="'+data[i].id+'" data-toggle="modal" data-target="#modalterima">'+
+                                        '<button class="btn btn-success editor mx-1" id="terima" value="'+data[i].id+'" status="'+data[i].status+'" data-toggle="modal" data-target="#modalterima">'+
 																			  "accept"+'</button>'+
-                                        '<button class="btn btn-danger editor mx-1" id="tolak" value="'+data[i].id+'" data-toggle="modal" data-target="#modaltolak">'+
+                                        '<button class="btn btn-danger editor mx-1" id="tolak" value="'+data[i].id+'" status="'+data[i].status+'" data-toggle="modal" data-target="#modaltolak">'+
 																			  "refuse"+'</button>'+
                                         '</td>'+
 												'</tr>';
-                  if (data[i].status==1 || data[i].status==2){
-                    $('#editor').attr('disable', true)
-                    $('#terima').attr('disable', true)
-                    $('#tolak').attr('disable', true)
-                  } else {
-                    $('#editor').attr('disable', false)
-                    $('#terima').attr('disable', false)
-                    $('#tolak').attr('disable', false)
-                  }
-								
 							}
               $('#target').html(baris);
 						}
 					})
         };
 
+        $('#editor').attr('disabled', true);
+        $('#terima').attr('disabled', true);
+        $('#tolak').attr('disabled', true);
+        
+        var status1 = $('#editor').val("status");
+        if(status1 != null){
+          $('#editor').attr("disabled", true);
+        }else{
+          $('#editor').attr("disabled", true)
+        }
+
+        var status2 = $('#terima').val("status");
+        if(status2 == 1 || status2 == 2 ){
+          $('#terima').attr("disabled", true);
+        }else{
+          $('#terima').attr("disabled", true)
+        }
+
+        var status3 = $('#tolak').val("status");
+        if(status2 == 1 || status2 == 2 ){
+          $('#editor').attr("disabled", true);
+        }else{
+          $('#editor').attr("disabled", true)
+        }
         function proceding() {
 					$.ajax({
 						type:'GET',
