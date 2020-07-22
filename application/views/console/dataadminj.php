@@ -192,21 +192,21 @@
         if(status1 != null){
           $('#editor').attr("disabled", true);
         }else{
-          $('#editor').attr("disabled", true)
+          $('#editor').attr("disabled", false)
         }
 
         var status2 = $('#terima').val("status");
         if(status2 == 1 || status2 == 2 ){
           $('#terima').attr("disabled", true);
         }else{
-          $('#terima').attr("disabled", true)
+          $('#terima').attr("disabled", false)
         }
 
         var status3 = $('#tolak').val("status");
         if(status2 == 1 || status2 == 2 ){
           $('#editor').attr("disabled", true);
         }else{
-          $('#editor').attr("disabled", true)
+          $('#editor').attr("disabled", false)
         }
         function proceding() {
 					$.ajax({
