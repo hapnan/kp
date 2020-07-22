@@ -1,0 +1,119 @@
+.wrapper {
+    display: flex;
+	
+}
+.content{
+    height: 100%;
+    background-color: white;
+}
+.sidebar {
+    width: 16rem;
+    min-height: 100vh;
+	background-color: #4e73df;
+	background-image: linear-gradient(180deg,#4e73df 10%,#224abe 100%);
+    color: white;
+	border: none;
+}
+hr{
+	width: 90%;
+	border: 1px solid rgba(255,255,255,.15);
+}
+.sidebar .sidebar-header {
+	padding: 10px;
+    height: 100px;
+    overflow: hidden;
+    padding-top: 25px;
+}
+
+.sidebar .components h5 {
+    color: rgb(185, 185, 185);
+    padding: 5px;
+}
+
+.sidebar .components div a {
+    padding: 10px;
+	font-size: 1.1em;
+    color: rgb(185, 185, 185);
+    display: block;
+}
+
+.card{
+	max-width: 90%;
+	margin-left: 10px;
+}
+
+.card-body{
+	padding-left: 10px !important;
+	padding: 0px !important;
+}
+
+
+/* .sidebar .components .dropdown .collapse{
+	color: black !important;
+	padding: 5px !important;
+	padding-left: 25px !important;
+	transition: 5ms;
+}
+.collapsing{
+	color: black !important;
+}
+*/
+.sidebar .components .accordion .collapse .collapse .card-body .text-dark:hover {
+	background-color: rgba(78, 78, 78, 0.5);
+	border-radius: 50px;
+}
+.sidebar .components div a:hover {
+	color: rgb(255, 255, 255);
+	text-decoration: none;
+
+}
+
+a[data-toggle="collapse"] {
+	position: relative;
+	padding: 10px;
+}
+
+.dropdown-toggle::after {
+    display: block;
+    position: absolute;
+    top: 50%;
+	right: 20px;
+    transform: translateY(-50%);
+}
+
+.sidebar .sidebar-header .user-img{
+    float: left;
+    width: 60px;
+    height: 60px;
+    overflow: hidden;
+}
+.sidebar .sidebar-header .user-img img{
+    object-fit: cover;
+    height: 100%;
+    width: 100%;
+}
+
+.sidebar .sidebar-header .user-info{
+    margin-left: 10px;
+    float: left;
+    margin-top: 8px;
+}
+
+.sidebar .sidebar-header .user-info small{
+    font-size: 12px;
+}
+.sidebar .sidebar-header .user-info  span{
+   display: block;
+   font-size: 15px;
+}
+
+.profil{
+    border: 2px solid white;
+}
+
+.wrapper #content-wrapper {
+    background-color: #dadada;
+    width: 100%;
+    overflow-x: hidden;
+}
+

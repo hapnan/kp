@@ -1,0 +1,17 @@
+.container-fluid{
+	background-color: whitesmoke;
+	width: 95% !important;
+	box-shadow: -1px -1px 10px 1px rgba(0,0,0,0.1);
+    border-radius: 10px
+}
+.action{
+	width: 100px;
+	text-align: end;
+	
+}
+
+
+
+.action .delete{
+	color: red;
+}
