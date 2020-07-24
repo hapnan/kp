@@ -93,6 +93,36 @@ class Console extends CI_Controller {
 		$this->load->view('console/dataadminj');
 	}
 
+	function get_ajax() {
+        $list = $this->jur->get_datatables();
+        $data = array();
+        $no = @$_POST['start'];
+        foreach ($list as $item) {
+			
+            $no++;
+            $row = array();
+            $row[] = $no.".";
+            $row[] = $item->namajurnal;
+            $row[] = $item->jdl_publikasi;
+			$row[] = $item->jns_publikasi;
+			$row[] = $item->thn;
+            $row[] = $item->issn;
+			$row[] = '<a href="'.$item->id.'" class="btn btn-link">link jurnal</a>';
+			
+			$row[] = '<button class="btn btn-warning editor mx-1" id="editor" value="'.$item->id.'"  data-toggle="modal" data-target="#modaleditor">Assign to Editors</button>
+						<br><button class="btn btn-success editor mx-1" id="terima" value="'.$item->id.'" data-toggle="modal" data-target="#modalterima">accept</button>
+						<button class="btn btn-danger editor mx-1" id="tolak" value="'.$item->id.'" data-toggle="modal" data-target="#modaltolak">refuse</button>';
+        }
+        $output = array(
+                    "draw" => intval(@$_POST['draw']),
+                    "recordsTotal" => $this->jur->count_all(),
+                    "recordsFiltered" => $this->jur->count_filtered(),
+                    "data" => $data,
+                );
+        // output to json format
+        echo json_encode($output);
+    }
+
 	public function datajournal()
 	{	
 		if ($this->session->userdata('role')==1) {

@@ -7,6 +7,7 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="<?= base_url()?>/assets/datatable/datatables.css">
     <link rel="stylesheet" href="<?= base_url()?>/assets/css/data.css">
     <title>Hello, world!</title>
   </head>
@@ -22,7 +23,7 @@
     </ul>
     <div class="tab-content" id="myTabContent">
       <div class="tab-pane fade show active mt-2" id="home" role="tabpanel" aria-labelledby="jurnaltab">
-        <table class="table">
+        <table class="table" id="datatablej">
             <thead class="thead-dark text-center">
                 <tr>
                     <th scope="col">No</th>
@@ -36,13 +37,13 @@
                     <th scope="col">action</th>
                 </tr>
             </thead>
-            <tbody id="target">
+            <tbody>
               
             </tbody>
         </table>
       </div>
       <div class="tab-pane fade mt-2" id="proceding" role="tabpanel" aria-labelledby="procedingtab">
-      <table class="table">
+      <table class="table ">
         <thead class="thead-dark text-center">
             <tr>
                 <th scope="col">No</th>
@@ -56,8 +57,18 @@
                 <th scope="col">action</th>
             </tr>
         </thead>
-        <tbody id="target-p">
-           
+        <tbody>
+            <tr>
+                <th scope="col">No</th>
+                <th scope="col">Judul Makalah</th>
+                <th scope="col">Nama Forum</th>
+                <th scope="col">Tingkat Forum</th>
+                <th scope="col">Tahun Pelaksanaan</th>
+                <th scope="col">Institusi Penyelenggara</th>
+                <th scope="col">Url Proceding</th>
+                <th scope="col">Details</th>
+                <th scope="col">action</th>
+            </tr>
         </tbody>
   </table>
       </div>
@@ -138,14 +149,38 @@
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="<?php echo base_url('assets/js/jquery-3.4.1.js') ?>" ></script>
+    <script src="<?php echo base_url('assets/datatable/datatables.js') ?>"" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
     <script type="text/javascript">
       
       $(document).ready(function(){
-        jurnal();
-        proceding();
+        $('#datatablej').DataTable( {
+          "processing": true,
+          "serverSide": true,
+          "ajax": {
+                  "url": "<?= site_url('console/get_ajax')?>",
+                  "type": "POST"
+                },
+                "columnDefs": [
+                  { "orderable": false, "targets": 2 },
+                  { "orderable": false, "targets": 3 },
+                  { "orderable": false, "targets": 5 },
+                  { "orderable": false, "targets": 6 },
+                  { "orderable": false, "targets": 7 },
+                  { "orderable": false, "targets": 8 },
+                  { "searchable": false, "targets": 0 },
+                  { "searchable": false, "targets": 3 },
+                  { "searchable": false, "targets": 4 },
+                  { "searchable": false, "targets": 5 },
+                  { "searchable": false, "targets": 6 },
+                  { "searchable": false, "targets": 7 },
+                  { "searchable": false, "targets": 8 },
+                  
 
+                ]
+        });
 				function jurnal() {
 					$.ajax({
 						type:'GET',
