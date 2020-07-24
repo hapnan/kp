@@ -8,6 +8,7 @@ class Console extends CI_Controller {
 		parent::__construct();
 		$this->load->model('server','ser',true);
 		$this->load->model('jurnal', 'jur', true);
+		$this->load->model('proceding','pcd', true);
 	}
 
 	public function index()
@@ -93,26 +94,66 @@ class Console extends CI_Controller {
 		$this->load->view('console/dataadminj');
 	}
 
-	function get_ajax() {
+	function get_ajaxj() {
         $list = $this->jur->get_datatables();
         $data = array();
-        $no = @$_POST['start'];
+		$no = @$_POST['start'];
+		$button = "<?php echo base_url('')';'?>console/details/";
         foreach ($list as $item) {
 			
             $no++;
-            $row = array();
-            $row[] = $no.".";
-            $row[] = $item->namajurnal;
-            $row[] = $item->jdl_publikasi;
-			$row[] = $item->jns_publikasi;
-			$row[] = $item->thn;
-            $row[] = $item->issn;
-			$row[] = '<a href="'.$item->id.'" class="btn btn-link">link jurnal</a>';
+            $row = [
+				'no' => $no,
+				'namajurnal' => $item['namajurnal'].'.',
+				'jdl_publikasi' => $item['jdl_publikasi'],
+				'jns_publikasi' => $item['jns_publikasi'],
+				'thn' => $item['thn'],
+				'issn' => $item['issn'],
+				'linkjurnal' => '<a href="'.$item['url'].'" class="btn btn-link">link jurnal</a>',
+				'details' => '<a href="details/'.$item['id'].'" class="btn btn-link">detail</a>',
+				'action' => '<button class="btn btn-warning editor btn-block" id="editor" value="'.$item['id'].'"  data-toggle="modal" data-target="#modaleditor">Assign to Editors</button>
+							<span></span><button class="btn btn-success editor mt-1" id="terima" value="'.$item['id'].'" data-toggle="modal" data-target="#modalterima">accept</button>
+							<button class="btn btn-danger float-right editor mt-1" id="tolak" value="'.$item['id'].'" data-toggle="modal" data-target="#modaltolak">refuse</button>',
+			];
+			$data[] = $row;
+		}
+		
+		
+        $output = array(
+                    "draw" => intval(@$_POST['draw']),
+                    "recordsTotal" => $this->jur->count_all(),
+                    "recordsFiltered" => $this->jur->count_filtered(),
+                    "data" => $data,
+                );
+        // output to json format
+        echo json_encode($output);
+	}
+	
+	function get_ajaxp() {
+        $list = $this->pcd->get_datatables();
+        $data = array();
+		$no = @$_POST['start'];
+		$button = "<?php echo base_url('')';'?>console/details/";
+        foreach ($list as $item) {
 			
-			$row[] = '<button class="btn btn-warning editor mx-1" id="editor" value="'.$item->id.'"  data-toggle="modal" data-target="#modaleditor">Assign to Editors</button>
-						<br><button class="btn btn-success editor mx-1" id="terima" value="'.$item->id.'" data-toggle="modal" data-target="#modalterima">accept</button>
-						<button class="btn btn-danger editor mx-1" id="tolak" value="'.$item->id.'" data-toggle="modal" data-target="#modaltolak">refuse</button>';
-        }
+            $no++;
+            $row = [
+				'no' => $no,
+				'nm_dsn' => $item['nm_dsn'].'.',
+				'jdl_makalah' => $item['jdl_makalah'],
+				'nm_forum' => $item['nm_forum'],
+				'tgk_forum_ilm' => $item['tgk_forum_ilm'],
+				'thn_pelaksanaan' => $item['thn_pelaksanaan'],
+				'linkjurnal' => '<a href="'.$item['url_jurnal'].'" class="btn btn-link">link jurnal</a>',
+				'details' => '<a href="details/'.$item['id'].'" class="btn btn-link">detail</a>',
+				'action' => '<button class="btn btn-warning editor btn-block" id="editor" value="'.$item['id'].'"  data-toggle="modal" data-target="#modaleditor">Assign to Editors</button>
+							<span></span><button class="btn btn-success editor mt-1" id="terima" value="'.$item['id'].'" data-toggle="modal" data-target="#modalterima">accept</button>
+							<button class="btn btn-danger float-right editor mt-1" id="tolak" value="'.$item['id'].'" data-toggle="modal" data-target="#modaltolak">refuse</button>',
+			];
+			$data[] = $row;
+		}
+		
+		
         $output = array(
                     "draw" => intval(@$_POST['draw']),
                     "recordsTotal" => $this->jur->count_all(),
@@ -122,78 +163,6 @@ class Console extends CI_Controller {
         // output to json format
         echo json_encode($output);
     }
-
-	public function datajournal()
-	{	
-		if ($this->session->userdata('role')==1) {
-			$data = [
-				'id' => $this->session->userdata('id'),
-				'role' => $this->session->userdata('role'),
-
-			];
-			$dataj = $this->jur->getjurnal($data)->result();
-
-			echo json_encode($dataj);
-			
-		} else if ($this->session->userdata('role')==2) {
-			$data = [
-				'id' => $this->session->userdata('id'),
-				'role' => $this->session->userdata('role'),
-
-			];
-			
-			$dataj = $this->jur->getjurnal($data)->result();
-
-			echo json_encode($dataj);
-		}else if($this->session->userdata('role')==3){
-			$data = [
-				'id' => $this->session->userdata('id'),
-				'role' => $this->session->userdata('role'),
-
-			];
-			
-			$dataj = $this->jur->getjurnal($data)->result();
-
-			echo json_encode($dataj);
-		}
-		
-	}
-	
-	public function dataproceding()
-	{	
-		if ($this->session->userdata('role')==1) {
-			$data = [
-				'id' => $this->session->userdata('id'),
-				'role' => $this->session->userdata('role'),
-
-			];
-			$datap = $this->jur->getproceding($data)->result();
-
-			echo json_encode($datap);
-			
-		} else if ($this->session->userdata('role')==2) {
-			$data = [
-				'id' => $this->session->userdata('id'),
-				'role' => $this->session->userdata('role'),
-
-			];
-			
-			$datap = $this->jur->getproceding($data)->result();
-
-			echo json_encode($datap);
-		}else if($this->session->userdata('role')==3){
-			$data = [
-				'id' => $this->session->userdata('id'),
-				'role' => $this->session->userdata('role'),
-
-			];
-			
-			$datap = $this->jur->getproceding($data)->result();
-
-			echo json_encode($datap);
-		}
-		
-	}
 	
 	public function details($id)
 	{

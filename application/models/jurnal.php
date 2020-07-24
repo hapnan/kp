@@ -40,7 +40,7 @@
 				$this->db->limit(@$_POST['length'], @$_POST['start']);
 			}
 			$query = $this->db->get();
-			return $query->result();
+			return $query->result_array();
 		}
 		function count_filtered() {
 			$this->_get_datatables_query();

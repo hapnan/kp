@@ -43,32 +43,22 @@
         </table>
       </div>
       <div class="tab-pane fade mt-2" id="proceding" role="tabpanel" aria-labelledby="procedingtab">
-      <table class="table ">
+      <table class="table display" style="width:100%" id="datatablep">
         <thead class="thead-dark text-center">
             <tr>
                 <th scope="col">No</th>
+                <th scope="col">Nama Dosen</th>
                 <th scope="col">Judul Makalah</th>
                 <th scope="col">Nama Forum</th>
                 <th scope="col">Tingkat Forum</th>
                 <th scope="col">Tahun Pelaksanaan</th>
-                <th scope="col">Institusi Penyelenggara</th>
-                <th scope="col">Url Proceding</th>
+                <th scope="col">link proceding</th>
                 <th scope="col">Details</th>
                 <th scope="col">action</th>
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <th scope="col">No</th>
-                <th scope="col">Judul Makalah</th>
-                <th scope="col">Nama Forum</th>
-                <th scope="col">Tingkat Forum</th>
-                <th scope="col">Tahun Pelaksanaan</th>
-                <th scope="col">Institusi Penyelenggara</th>
-                <th scope="col">Url Proceding</th>
-                <th scope="col">Details</th>
-                <th scope="col">action</th>
-            </tr>
+            
         </tbody>
   </table>
       </div>
@@ -160,10 +150,21 @@
           "processing": true,
           "serverSide": true,
           "ajax": {
-                  "url": "<?= site_url('console/get_ajax')?>",
+                  "url": "<?= site_url('console/get_ajaxj')?>",
                   "type": "POST"
                 },
-                "columnDefs": [
+          "columns": [
+              { "data": "no"},
+              { "data": "namajurnal" },
+              { "data": "jdl_publikasi" },
+              { "data": "jns_publikasi" },
+              { "data": "thn" },
+              { "data": "issn" },
+              { "data": "linkjurnal" },
+              { "data": "details" },
+              { "data": "action" },
+          ],
+          "columnDefs": [
                   { "orderable": false, "targets": 2 },
                   { "orderable": false, "targets": 3 },
                   { "orderable": false, "targets": 5 },
@@ -177,47 +178,43 @@
                   { "searchable": false, "targets": 6 },
                   { "searchable": false, "targets": 7 },
                   { "searchable": false, "targets": 8 },
-                  
-
                 ]
         });
-				function jurnal() {
-					$.ajax({
-						type:'GET',
-						url:'<?= base_url().'console/datajournal';?>',
-            dataType: 'json',
-            error:function(data){
-              alert('wkwkwkwkwkwk')
-            },
-						success: function(data){
-							var baris='';
-							for (var i = 0; i < data.length; i++) {
-								var sum = i+1;
-								baris +='<tr>'+
-																'<td>'+sum+'</td>'+
-																'<td>'+data[i].namajurnal+'</td>'+
-																'<td>'+data[i].jdl_publikasi+'</td>'+
-                                '<td>'+data[i].jns_publikasi+'</td>'+
-																'<td>'+data[i].thn+'</td>'+
-																'<td>'+data[i].issn+'</td>'+
-																'<td>'+'<a class="btn btn-link" href="'+data[i].url+'" target="_blank">'+'link'+'</a>'+'</td>'+
-																'<td class="detail">'+'<a href="<?php echo base_url('');?>console/details/'+data[i].id+'" class="btn btn-link details" id="details" target="_blank"  value="'+data[i].id+'">'+
-																			  '<i class="material-icons edit" >'+"Details"+'</i>'+
-																			'</a>'+'</td>'+
-                                
-                                '<td>'+'<button class="btn btn-warning editor mx-1" id="editor" value="'+data[i].id+'" status="'+data[i].status+'" data-toggle="modal" data-target="#modaleditor">'+
-																			  "Assign to Editors"+'</button>'+
-                                        '<button class="btn btn-success editor mx-1" id="terima" value="'+data[i].id+'" status="'+data[i].status+'" data-toggle="modal" data-target="#modalterima">'+
-																			  "accept"+'</button>'+
-                                        '<button class="btn btn-danger editor mx-1" id="tolak" value="'+data[i].id+'" status="'+data[i].status+'" data-toggle="modal" data-target="#modaltolak">'+
-																			  "refuse"+'</button>'+
-                                        '</td>'+
-												'</tr>';
-							}
-              $('#target').html(baris);
-						}
-					})
-        };
+
+        $('#datatablep').DataTable( {
+          "processing": true,
+          "serverSide": true,
+          "ajax": {
+                  "url": "<?= site_url('console/get_ajaxp')?>",
+                  "type": "POST"
+                },
+          "columns": [
+              { "data": "no"},
+              { "data": "nm_dsn" },
+              { "data": "jdl_makalah" },
+              { "data": "nm_forum" },
+              { "data": "tgk_forum_ilm" },
+              { "data": "thn_pelaksanaan" },
+              { "data": "linkjurnal" },
+              { "data": "details" },
+              { "data": "action" },
+          ],
+          "columnDefs": [
+                  { "orderable": false, "targets": 2 },
+                  { "orderable": false, "targets": 3 },
+                  { "orderable": false, "targets": 5 },
+                  { "orderable": false, "targets": 6 },
+                  { "orderable": false, "targets": 7 },
+                  { "orderable": false, "targets": 8 },
+                  { "searchable": false, "targets": 0 },
+                  { "searchable": false, "targets": 3 },
+                  { "searchable": false, "targets": 4 },
+                  { "searchable": false, "targets": 5 },
+                  { "searchable": false, "targets": 6 },
+                  { "searchable": false, "targets": 7 },
+                  { "searchable": false, "targets": 8 },
+                ]
+        });
 
         $('#editor').attr('disabled', true);
         $('#terima').attr('disabled', true);
