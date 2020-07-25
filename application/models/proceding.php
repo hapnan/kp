@@ -8,7 +8,7 @@
 		var $order = array('id' => 'asc'); // default order
 
 		private function _get_datatables_query() {
-			$this->db->select('data_proceeding.*,id, jdl_makalah ,nm_forum, tgk_forum_ilm, thn_pelaksanaan, url_jurnal, nm_dsn');
+			$this->db->select('data_proceeding.*,id, jdl_makalah ,nm_forum, tgk_forum_ilm, thn_pelaksanaan, url_jurnal, nm_dsn, editor ,status');
 			$this->db->from('data_proceeding');
 			$i = 0;
 			 foreach ($this->column_search as $item) { // loop column

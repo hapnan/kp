@@ -34,6 +34,7 @@
                     <th scope="col">ISSN Jurnal</th>
                     <th scope="col">url Jurnal</th>
                     <th scope="col">Details</th>
+                    <th scope="col">Status</th>
                     <th scope="col">action</th>
                 </tr>
             </thead>
@@ -43,7 +44,7 @@
         </table>
       </div>
       <div class="tab-pane fade mt-2" id="proceding" role="tabpanel" aria-labelledby="procedingtab">
-      <table class="table display" style="width:100%" id="datatablep">
+      <table class="table display" style="width: 100%;"  id="datatablep">
         <thead class="thead-dark text-center">
             <tr>
                 <th scope="col">No</th>
@@ -54,6 +55,7 @@
                 <th scope="col">Tahun Pelaksanaan</th>
                 <th scope="col">link proceding</th>
                 <th scope="col">Details</th>
+                <th scope="col">status</th>
                 <th scope="col">action</th>
             </tr>
         </thead>
@@ -162,6 +164,7 @@
               { "data": "issn" },
               { "data": "linkjurnal" },
               { "data": "details" },
+              { "data": "status" },
               { "data": "action" },
           ],
           "columnDefs": [
@@ -197,7 +200,8 @@
               { "data": "thn_pelaksanaan" },
               { "data": "linkjurnal" },
               { "data": "details" },
-              { "data": "action" },
+              { "data": "status" },
+              { "data": "action" }
           ],
           "columnDefs": [
                   { "orderable": false, "targets": 2 },
@@ -240,54 +244,6 @@
         }else{
           $('#editor').attr("disabled", true)
         }
-        function proceding() {
-					$.ajax({
-						type:'GET',
-						url:'<?= base_url().'console/dataproceding';?>',
-            dataType: 'json',
-            error:function(data){
-              alert('wkwkwkwkwkwk')
-            },
-						success: function(data){
-							var baris='';
-							for (var i = 0; i < data.length; i++) {
-								var sum = i+1;
-								baris +='<tr>'+
-																'<td>'+sum+'</td>'+
-																'<td>'+data[i].jdl_makalah+'</td>'+
-																'<td>'+data[i].nm_forum+'</td>'+
-                                '<td>'+data[i].tgk_forum_ilm+'</td>'+
-																'<td>'+data[i].thn_pelaksanaan+'</td>'+
-																'<td>'+data[i].ins_penyelenggara+'</td>'+
-																'<td>'+'<a class="btn btn-link" href="'+data[i].url_jurnal+'" target="_blank">'+'link'+'</a>'+'</td>'+
-																'<td class="detail">'+'<a href="<?php echo base_url('');?>console/details/'+data[i].id+'" class="btn btn-link details" id="details" target="_blank"  value="'+data[i].id+'">'+
-																			  '<i class="material-icons edit" >'+"Details"+'</i>'+
-																			'</a>'+'</td>'+
-                                
-                                '<td>'+'<button class="btn btn-warning editor mx-1" id="editor" value="'+data[i].id+'" data-toggle="modal" data-target="#modaleditor">'+
-																			  "Assign to Editors"+'</button>'+
-                                        '<button class="btn btn-success editor mx-1" id="terima" value="'+data[i].id+'" data-toggle="modal" data-target="#modalterima">'+
-																			  "accept"+'</button>'+
-                                        '<button class="btn btn-danger editor mx-1" id="tolak" value="'+data[i].id+'" data-toggle="modal" data-target="#modaltolak">'+
-																			  "refuse"+'</button>'+
-                                        '</td>'+
-												'</tr>';
-                  if (data[i].status==1 || data[i].status==2){
-                    $('#editor').attr('disable', true)
-                    $('#terima').attr('disable', true)
-                    $('#tolak').attr('disable', true)
-                  } else {
-                    $('#editor').attr('disable', false)
-                    $('#terima').attr('disable', false)
-                    $('#tolak').attr('disable', false)
-                  }
-								
-							}
-              $('#target-p').html(baris);
-						}
-					})
-        };
-        
       })
     </script>
     <script type="text/javascript">

@@ -93,13 +93,34 @@ class Console extends CI_Controller {
 		
 		$this->load->view('console/dataadminj');
 	}
-
-	function get_ajaxj() {
-        $list = $this->jur->get_datatables();
+	
+	function get_ajaxj() { 
+		$list = $this->jur->get_datatables();
         $data = array();
 		$no = @$_POST['start'];
-		$button = "<?php echo base_url('')';'?>console/details/";
+		
         foreach ($list as $item) {
+			$editor = $this->ser->getuser($item['editor']);
+			
+			if ($item['editor']==null) {
+				$button ='<button class="btn btn-warning editor btn-block" id="editor" value="'.$item['id'].'"  data-toggle="modal" data-target="#modaleditor">Assign to Editors</button>';
+			} else {
+				$button ='<i>Assigned to '.$editor['nama_user'].'<br>';
+			}
+			
+			if ($item['status']==0) {
+				$status= '<i>Belum di review</i>';
+				$statusbutton= '<button class="btn btn-success editor mt-1" id="terima" value="'.$item['id'].'" data-toggle="modal" data-target="#modalterima">accept</button>
+				<button class="btn btn-danger float-right editor mt-1" id="tolak" value="'.$item['id'].'" data-toggle="modal" data-target="#modaltolak">refuse</button>';
+			} else if($item['status']==1){
+				$status= '<i><b>Di Terima</b></i>';
+				$statusbutton= '<button class="btn btn-success editor mt-1" id="terima" value="'.$item['id'].'" data-toggle="modal" data-target="#modalterima" disabled>accept</button>
+				<button class="btn btn-danger float-right editor mt-1" id="tolak" value="'.$item['id'].'" data-toggle="modal" data-target="#modaltolak" disabled>refuse</button>';
+			}else if($item['status']==2){
+				$status= '<i><b>Di Tolak</b></i>';
+				$statusbutton= '<button class="btn btn-success editor mt-1" id="terima" value="'.$item['id'].'" data-toggle="modal" data-target="#modalterima" disabled>accept</button>
+				<button class="btn btn-danger float-right editor mt-1" id="tolak" value="'.$item['id'].'" data-toggle="modal" data-target="#modaltolak" disabled>refuse</button>';
+			}
 			
             $no++;
             $row = [
@@ -111,10 +132,10 @@ class Console extends CI_Controller {
 				'issn' => $item['issn'],
 				'linkjurnal' => '<a href="'.$item['url'].'" class="btn btn-link">link jurnal</a>',
 				'details' => '<a href="details/'.$item['id'].'" class="btn btn-link">detail</a>',
-				'action' => '<button class="btn btn-warning editor btn-block" id="editor" value="'.$item['id'].'"  data-toggle="modal" data-target="#modaleditor">Assign to Editors</button>
-							<span></span><button class="btn btn-success editor mt-1" id="terima" value="'.$item['id'].'" data-toggle="modal" data-target="#modalterima">accept</button>
-							<button class="btn btn-danger float-right editor mt-1" id="tolak" value="'.$item['id'].'" data-toggle="modal" data-target="#modaltolak">refuse</button>',
-			];
+				'status' => $status,
+				'action' => $button.'<span>'.$statusbutton,
+			
+						];
 			$data[] = $row;
 		}
 		
@@ -134,7 +155,28 @@ class Console extends CI_Controller {
         $data = array();
 		$no = @$_POST['start'];
 		$button = "<?php echo base_url('')';'?>console/details/";
+		
         foreach ($list as $item) {
+			if (isset($item['editor'])) {
+				$button ='<button class="btn btn-warning editor btn-block" id="editor" value="'.$item['id'].'"  data-toggle="modal" data-target="#modaleditor">Assign to Editors</button>';
+			} else {
+				$editor = $this->ser->getuser($item['editor']);
+				$button ='<i>Assigned to '.isset($editor['nama_user']).'<br>';
+			}
+			
+			if ($item['status']==0) {
+				$status= '<i>Belum di review</i>';
+				$statusbutton= '<button class="btn btn-success editor mt-1" id="terima" value="'.$item['id'].'" data-toggle="modal" data-target="#modalterima">accept</button>
+				<button class="btn btn-danger float-right editor mt-1" id="tolak" value="'.$item['id'].'" data-toggle="modal" data-target="#modaltolak">refuse</button>';
+			} else if($item['status']==1){
+				$status= '<i><b>Di Terima</b></i>';
+				$statusbutton= '<button class="btn btn-success editor mt-1" id="terima" value="'.$item['id'].'" data-toggle="modal" data-target="#modalterima" disabled>accept</button>
+				<button class="btn btn-danger float-right editor mt-1" id="tolak" value="'.$item['id'].'" data-toggle="modal" data-target="#modaltolak" disabled>refuse</button>';
+			}else if($item['status']==2){
+				$status= '<i><b>Di Tolak</b></i>';
+				$statusbutton= '<button class="btn btn-success editor mt-1" id="terima" value="'.$item['id'].'" data-toggle="modal" data-target="#modalterima" disabled>accept</button>
+				<button class="btn btn-danger float-right editor mt-1" id="tolak" value="'.$item['id'].'" data-toggle="modal" data-target="#modaltolak" disabled>refuse</button>';
+			}
 			
             $no++;
             $row = [
@@ -146,9 +188,8 @@ class Console extends CI_Controller {
 				'thn_pelaksanaan' => $item['thn_pelaksanaan'],
 				'linkjurnal' => '<a href="'.$item['url_jurnal'].'" class="btn btn-link">link jurnal</a>',
 				'details' => '<a href="details/'.$item['id'].'" class="btn btn-link">detail</a>',
-				'action' => '<button class="btn btn-warning editor btn-block" id="editor" value="'.$item['id'].'"  data-toggle="modal" data-target="#modaleditor">Assign to Editors</button>
-							<span></span><button class="btn btn-success editor mt-1" id="terima" value="'.$item['id'].'" data-toggle="modal" data-target="#modalterima">accept</button>
-							<button class="btn btn-danger float-right editor mt-1" id="tolak" value="'.$item['id'].'" data-toggle="modal" data-target="#modaltolak">refuse</button>',
+				'status' => $status,
+				'action' => $button.'<span>'.$statusbutton,
 			];
 			$data[] = $row;
 		}

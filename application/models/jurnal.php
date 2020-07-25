@@ -10,7 +10,7 @@
 		var $order = array('id' => 'asc'); // default order
 
 		private function _get_datatables_query() {
-			$this->db->select('data_journal.*,id, namajurnal, jdl_publikasi, jns_publikasi, thn, issn, url');
+			$this->db->select('data_journal.*,id, namajurnal, jdl_publikasi, jns_publikasi, thn, issn, url, editor, status');
 			$this->db->from('data_journal');
 			$i = 0;
 			 foreach ($this->column_search as $item) { // loop column
