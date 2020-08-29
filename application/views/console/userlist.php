@@ -232,8 +232,9 @@
 						url : '<?= base_url('register')?>',
 						data : {username: username, nama: name, alias: alias, email: email, password: password, select: select},
 						success: function(data){
-							alert("User berhasil di Tambahkan");
 							$('#modal_tambah').modal('hide');
+							$('body').removeClass('modal-open');
+							$('.modal-backdrop').remove();
 							ajaxsearch();
 						},
 						error: function(){
