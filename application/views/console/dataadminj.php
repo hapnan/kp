@@ -7,6 +7,7 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="<?= base_url()?>/assets/datatable/datatables.css">
     <link rel="stylesheet" href="<?= base_url()?>/assets/css/data.css">
     <title>Hello, world!</title>
   </head>
@@ -22,7 +23,7 @@
     </ul>
     <div class="tab-content" id="myTabContent">
       <div class="tab-pane fade show active mt-2" id="home" role="tabpanel" aria-labelledby="jurnaltab">
-        <table class="table">
+        <table class="table" id="datatablej">
             <thead class="thead-dark text-center">
                 <tr>
                     <th scope="col">No</th>
@@ -33,31 +34,33 @@
                     <th scope="col">ISSN Jurnal</th>
                     <th scope="col">url Jurnal</th>
                     <th scope="col">Details</th>
+                    <th scope="col">Status</th>
                     <th scope="col">action</th>
                 </tr>
             </thead>
-            <tbody id="target">
+            <tbody>
               
             </tbody>
         </table>
       </div>
       <div class="tab-pane fade mt-2" id="proceding" role="tabpanel" aria-labelledby="procedingtab">
-      <table class="table">
+      <table class="table display" style="width: 100%;"  id="datatablep">
         <thead class="thead-dark text-center">
             <tr>
                 <th scope="col">No</th>
+                <th scope="col">Nama Dosen</th>
                 <th scope="col">Judul Makalah</th>
                 <th scope="col">Nama Forum</th>
                 <th scope="col">Tingkat Forum</th>
                 <th scope="col">Tahun Pelaksanaan</th>
-                <th scope="col">Institusi Penyelenggara</th>
-                <th scope="col">Url Proceding</th>
+                <th scope="col">link proceding</th>
                 <th scope="col">Details</th>
+                <th scope="col">status</th>
                 <th scope="col">action</th>
             </tr>
         </thead>
-        <tbody id="target-p">
-           
+        <tbody>
+            
         </tbody>
   </table>
       </div>
@@ -138,51 +141,84 @@
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="<?php echo base_url('assets/js/jquery-3.4.1.js') ?>" ></script>
+    <script src="<?php echo base_url('assets/datatable/datatables.js') ?>"" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
     <script type="text/javascript">
       
       $(document).ready(function(){
-        jurnal();
-        proceding();
+        $('#datatablej').DataTable( {
+          "processing": true,
+          "serverSide": true,
+          "ajax": {
+                  "url": "<?= site_url('console/get_ajaxj')?>",
+                  "type": "POST"
+                },
+          "columns": [
+              { "data": "no"},
+              { "data": "namajurnal" },
+              { "data": "jdl_publikasi" },
+              { "data": "jns_publikasi" },
+              { "data": "thn" },
+              { "data": "issn" },
+              { "data": "linkjurnal" },
+              { "data": "details" },
+              { "data": "status" },
+              { "data": "action" },
+          ],
+          "columnDefs": [
+                  { "orderable": false, "targets": 2 },
+                  { "orderable": false, "targets": 3 },
+                  { "orderable": false, "targets": 5 },
+                  { "orderable": false, "targets": 6 },
+                  { "orderable": false, "targets": 7 },
+                  { "orderable": false, "targets": 8 },
+                  { "searchable": false, "targets": 0 },
+                  { "searchable": false, "targets": 3 },
+                  { "searchable": false, "targets": 4 },
+                  { "searchable": false, "targets": 5 },
+                  { "searchable": false, "targets": 6 },
+                  { "searchable": false, "targets": 7 },
+                  { "searchable": false, "targets": 8 },
+                ]
+        });
 
-				function jurnal() {
-					$.ajax({
-						type:'GET',
-						url:'<?= base_url().'console/datajournal';?>',
-            dataType: 'json',
-            error:function(data){
-              alert('wkwkwkwkwkwk')
-            },
-						success: function(data){
-							var baris='';
-							for (var i = 0; i < data.length; i++) {
-								var sum = i+1;
-								baris +='<tr>'+
-																'<td>'+sum+'</td>'+
-																'<td>'+data[i].namajurnal+'</td>'+
-																'<td>'+data[i].jdl_publikasi+'</td>'+
-                                '<td>'+data[i].jns_publikasi+'</td>'+
-																'<td>'+data[i].thn+'</td>'+
-																'<td>'+data[i].issn+'</td>'+
-																'<td>'+'<a class="btn btn-link" href="'+data[i].url+'" target="_blank">'+'link'+'</a>'+'</td>'+
-																'<td class="detail">'+'<a href="<?php echo base_url('');?>console/details/'+data[i].id+'" class="btn btn-link details" id="details" target="_blank"  value="'+data[i].id+'">'+
-																			  '<i class="material-icons edit" >'+"Details"+'</i>'+
-																			'</a>'+'</td>'+
-                                
-                                '<td>'+'<button class="btn btn-warning editor mx-1" id="editor" value="'+data[i].id+'" status="'+data[i].status+'" data-toggle="modal" data-target="#modaleditor">'+
-																			  "Assign to Editors"+'</button>'+
-                                        '<button class="btn btn-success editor mx-1" id="terima" value="'+data[i].id+'" status="'+data[i].status+'" data-toggle="modal" data-target="#modalterima">'+
-																			  "accept"+'</button>'+
-                                        '<button class="btn btn-danger editor mx-1" id="tolak" value="'+data[i].id+'" status="'+data[i].status+'" data-toggle="modal" data-target="#modaltolak">'+
-																			  "refuse"+'</button>'+
-                                        '</td>'+
-												'</tr>';
-							}
-              $('#target').html(baris);
-						}
-					})
-        };
+        $('#datatablep').DataTable( {
+          "processing": true,
+          "serverSide": true,
+          "ajax": {
+                  "url": "<?= site_url('console/get_ajaxp')?>",
+                  "type": "POST"
+                },
+          "columns": [
+              { "data": "no"},
+              { "data": "nm_dsn" },
+              { "data": "jdl_makalah" },
+              { "data": "nm_forum" },
+              { "data": "tgk_forum_ilm" },
+              { "data": "thn_pelaksanaan" },
+              { "data": "linkjurnal" },
+              { "data": "details" },
+              { "data": "status" },
+              { "data": "action" }
+          ],
+          "columnDefs": [
+                  { "orderable": false, "targets": 2 },
+                  { "orderable": false, "targets": 3 },
+                  { "orderable": false, "targets": 5 },
+                  { "orderable": false, "targets": 6 },
+                  { "orderable": false, "targets": 7 },
+                  { "orderable": false, "targets": 8 },
+                  { "searchable": false, "targets": 0 },
+                  { "searchable": false, "targets": 3 },
+                  { "searchable": false, "targets": 4 },
+                  { "searchable": false, "targets": 5 },
+                  { "searchable": false, "targets": 6 },
+                  { "searchable": false, "targets": 7 },
+                  { "searchable": false, "targets": 8 },
+                ]
+        });
 
         $('#editor').attr('disabled', true);
         $('#terima').attr('disabled', true);
@@ -208,54 +244,6 @@
         }else{
           $('#editor').attr("disabled", false)
         }
-        function proceding() {
-					$.ajax({
-						type:'GET',
-						url:'<?= base_url().'console/dataproceding';?>',
-            dataType: 'json',
-            error:function(data){
-              alert('wkwkwkwkwkwk')
-            },
-						success: function(data){
-							var baris='';
-							for (var i = 0; i < data.length; i++) {
-								var sum = i+1;
-								baris +='<tr>'+
-																'<td>'+sum+'</td>'+
-																'<td>'+data[i].jdl_makalah+'</td>'+
-																'<td>'+data[i].nm_forum+'</td>'+
-                                '<td>'+data[i].tgk_forum_ilm+'</td>'+
-																'<td>'+data[i].thn_pelaksanaan+'</td>'+
-																'<td>'+data[i].ins_penyelenggara+'</td>'+
-																'<td>'+'<a class="btn btn-link" href="'+data[i].url_jurnal+'" target="_blank">'+'link'+'</a>'+'</td>'+
-																'<td class="detail">'+'<a href="<?php echo base_url('');?>console/details/'+data[i].id+'" class="btn btn-link details" id="details" target="_blank"  value="'+data[i].id+'">'+
-																			  '<i class="material-icons edit" >'+"Details"+'</i>'+
-																			'</a>'+'</td>'+
-                                
-                                '<td>'+'<button class="btn btn-warning editor mx-1" id="editor" value="'+data[i].id+'" data-toggle="modal" data-target="#modaleditor">'+
-																			  "Assign to Editors"+'</button>'+
-                                        '<button class="btn btn-success editor mx-1" id="terima" value="'+data[i].id+'" data-toggle="modal" data-target="#modalterima">'+
-																			  "accept"+'</button>'+
-                                        '<button class="btn btn-danger editor mx-1" id="tolak" value="'+data[i].id+'" data-toggle="modal" data-target="#modaltolak">'+
-																			  "refuse"+'</button>'+
-                                        '</td>'+
-												'</tr>';
-                  if (data[i].status==1 || data[i].status==2){
-                    $('#editor').attr('disable', true)
-                    $('#terima').attr('disable', true)
-                    $('#tolak').attr('disable', true)
-                  } else {
-                    $('#editor').attr('disable', false)
-                    $('#terima').attr('disable', false)
-                    $('#tolak').attr('disable', false)
-                  }
-								
-							}
-              $('#target-p').html(baris);
-						}
-					})
-        };
-        
       })
     </script>
     <script type="text/javascript">

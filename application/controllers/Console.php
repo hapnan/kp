@@ -8,6 +8,7 @@ class Console extends CI_Controller {
 		parent::__construct();
 		$this->load->model('server','ser',true);
 		$this->load->model('jurnal', 'jur', true);
+		$this->load->model('proceding','pcd', true);
 	}
 
 	public function index()
@@ -92,78 +93,117 @@ class Console extends CI_Controller {
 		
 		$this->load->view('console/dataadminj');
 	}
-
-	public function datajournal()
-	{	
-		if ($this->session->userdata('role')==1) {
-			$data = [
-				'id' => $this->session->userdata('id'),
-				'role' => $this->session->userdata('role'),
-
-			];
-			$dataj = $this->jur->getjurnal($data)->result();
-
-			echo json_encode($dataj);
+	
+	function get_ajaxj() { 
+		$list = $this->jur->get_datatables();
+        $data = array();
+		$no = @$_POST['start'];
+		
+        foreach ($list as $item) {
+			$editor = $this->ser->getuser($item['editor']);
 			
-		} else if ($this->session->userdata('role')==2) {
-			$data = [
-				'id' => $this->session->userdata('id'),
-				'role' => $this->session->userdata('role'),
-
-			];
+			if ($item['editor']==null) {
+				$button ='<button class="btn btn-warning editor btn-block" id="editor" value="'.$item['id'].'"  data-toggle="modal" data-target="#modaleditor">Assign to Editors</button>';
+			} else {
+				$button ='<i>Assigned to '.$editor['nama_user'].'<br>';
+			}
 			
-			$dataj = $this->jur->getjurnal($data)->result();
-
-			echo json_encode($dataj);
-		}else if($this->session->userdata('role')==3){
-			$data = [
-				'id' => $this->session->userdata('id'),
-				'role' => $this->session->userdata('role'),
-
-			];
+			if ($item['status']==0) {
+				$status= '<i>Belum di review</i>';
+				$statusbutton= '<button class="btn btn-success editor mt-1" id="terima" value="'.$item['id'].'" data-toggle="modal" data-target="#modalterima">accept</button>
+				<button class="btn btn-danger float-right editor mt-1" id="tolak" value="'.$item['id'].'" data-toggle="modal" data-target="#modaltolak">refuse</button>';
+			} else if($item['status']==1){
+				$status= '<i><b>Di Terima</b></i>';
+				$statusbutton= '<button class="btn btn-success editor mt-1" id="terima" value="'.$item['id'].'" data-toggle="modal" data-target="#modalterima" disabled>accept</button>
+				<button class="btn btn-danger float-right editor mt-1" id="tolak" value="'.$item['id'].'" data-toggle="modal" data-target="#modaltolak" disabled>refuse</button>';
+			}else if($item['status']==2){
+				$status= '<i><b>Di Tolak</b></i>';
+				$statusbutton= '<button class="btn btn-success editor mt-1" id="terima" value="'.$item['id'].'" data-toggle="modal" data-target="#modalterima" disabled>accept</button>
+				<button class="btn btn-danger float-right editor mt-1" id="tolak" value="'.$item['id'].'" data-toggle="modal" data-target="#modaltolak" disabled>refuse</button>';
+			}
 			
-			$dataj = $this->jur->getjurnal($data)->result();
-
-			echo json_encode($dataj);
+            $no++;
+            $row = [
+				'no' => $no,
+				'namajurnal' => $item['namajurnal'].'.',
+				'jdl_publikasi' => $item['jdl_publikasi'],
+				'jns_publikasi' => $item['jns_publikasi'],
+				'thn' => $item['thn'],
+				'issn' => $item['issn'],
+				'linkjurnal' => '<a href="'.$item['url'].'" class="btn btn-link">link jurnal</a>',
+				'details' => '<a href="details/'.$item['id'].'" class="btn btn-link">detail</a>',
+				'status' => $status,
+				'action' => $button.'<span>'.$statusbutton,
+			
+						];
+			$data[] = $row;
 		}
 		
+		
+        $output = array(
+                    "draw" => intval(@$_POST['draw']),
+                    "recordsTotal" => $this->jur->count_all(),
+                    "recordsFiltered" => $this->jur->count_filtered(),
+                    "data" => $data,
+                );
+        // output to json format
+        echo json_encode($output);
 	}
 	
-	public function dataproceding()
-	{	
-		if ($this->session->userdata('role')==1) {
-			$data = [
-				'id' => $this->session->userdata('id'),
-				'role' => $this->session->userdata('role'),
-
-			];
-			$datap = $this->jur->getproceding($data)->result();
-
-			echo json_encode($datap);
+	function get_ajaxp() {
+        $list = $this->pcd->get_datatables();
+        $data = array();
+		$no = @$_POST['start'];
+		$button = "<?php echo base_url('')';'?>console/details/";
+		
+        foreach ($list as $item) {
+			if (isset($item['editor'])) {
+				$button ='<button class="btn btn-warning editor btn-block" id="editor" value="'.$item['id'].'"  data-toggle="modal" data-target="#modaleditor">Assign to Editors</button>';
+			} else {
+				$editor = $this->ser->getuser($item['editor']);
+				$button ='<i>Assigned to '.isset($editor['nama_user']).'<br>';
+			}
 			
-		} else if ($this->session->userdata('role')==2) {
-			$data = [
-				'id' => $this->session->userdata('id'),
-				'role' => $this->session->userdata('role'),
-
-			];
+			if ($item['status']==0) {
+				$status= '<i>Belum di review</i>';
+				$statusbutton= '<button class="btn btn-success editor mt-1" id="terima" value="'.$item['id'].'" data-toggle="modal" data-target="#modalterima">accept</button>
+				<button class="btn btn-danger float-right editor mt-1" id="tolak" value="'.$item['id'].'" data-toggle="modal" data-target="#modaltolak">refuse</button>';
+			} else if($item['status']==1){
+				$status= '<i><b>Di Terima</b></i>';
+				$statusbutton= '<button class="btn btn-success editor mt-1" id="terima" value="'.$item['id'].'" data-toggle="modal" data-target="#modalterima" disabled>accept</button>
+				<button class="btn btn-danger float-right editor mt-1" id="tolak" value="'.$item['id'].'" data-toggle="modal" data-target="#modaltolak" disabled>refuse</button>';
+			}else if($item['status']==2){
+				$status= '<i><b>Di Tolak</b></i>';
+				$statusbutton= '<button class="btn btn-success editor mt-1" id="terima" value="'.$item['id'].'" data-toggle="modal" data-target="#modalterima" disabled>accept</button>
+				<button class="btn btn-danger float-right editor mt-1" id="tolak" value="'.$item['id'].'" data-toggle="modal" data-target="#modaltolak" disabled>refuse</button>';
+			}
 			
-			$datap = $this->jur->getproceding($data)->result();
-
-			echo json_encode($datap);
-		}else if($this->session->userdata('role')==3){
-			$data = [
-				'id' => $this->session->userdata('id'),
-				'role' => $this->session->userdata('role'),
-
+            $no++;
+            $row = [
+				'no' => $no,
+				'nm_dsn' => $item['nm_dsn'].'.',
+				'jdl_makalah' => $item['jdl_makalah'],
+				'nm_forum' => $item['nm_forum'],
+				'tgk_forum_ilm' => $item['tgk_forum_ilm'],
+				'thn_pelaksanaan' => $item['thn_pelaksanaan'],
+				'linkjurnal' => '<a href="'.$item['url_jurnal'].'" class="btn btn-link">link jurnal</a>',
+				'details' => '<a href="details/'.$item['id'].'" class="btn btn-link">detail</a>',
+				'status' => $status,
+				'action' => $button.'<span>'.$statusbutton,
 			];
-			
-			$datap = $this->jur->getproceding($data)->result();
-
-			echo json_encode($datap);
+			$data[] = $row;
 		}
 		
-	}
+		
+        $output = array(
+                    "draw" => intval(@$_POST['draw']),
+                    "recordsTotal" => $this->jur->count_all(),
+                    "recordsFiltered" => $this->jur->count_filtered(),
+                    "data" => $data,
+                );
+        // output to json format
+        echo json_encode($output);
+    }
 	
 	public function details($id)
 	{
