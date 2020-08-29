@@ -235,6 +235,8 @@
 							$('#modal_tambah').modal('hide');
 							$('body').removeClass('modal-open');
 							$('.modal-backdrop').remove();
+							alert("User berhasil di Tambahkan");
+							$('#modal_tambah').modal('hide');
 							ajaxsearch();
 						},
 						error: function(){
